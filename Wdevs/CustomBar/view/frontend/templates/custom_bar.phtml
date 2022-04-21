@@ -1,0 +1,18 @@
+<div class="custom-bar" data-bind="scope: 'custom-bar'">
+    <!-- ko if: customBarContent()  -->
+    <span data-bind="text: customBarContent()"></span>
+    <!-- /ko -->
+</div>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Magento_Ui/js/core/app": {
+                "components": {
+                    "custom-bar": {
+                        "component": "Wdevs_CustomBar/js/view/custom-bar"
+                    }
+                }
+            }
+        }
+    }
+</script>
