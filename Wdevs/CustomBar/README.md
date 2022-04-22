@@ -10,5 +10,6 @@
 Show Custom Bar in top base on customer group
 
 ## Configuration
- - WDEVS/ CUSTOM BAR/ GENERAL/ Enabled (custom_bar/general/enabled)
+ - WDEVS / CUSTOM BAR / GENERAL / Enabled (custom_bar/general/enabled)
+ - CUSTOMERS / CUSTOMER GROUPS / Edit Group / Custom Bar Content
  

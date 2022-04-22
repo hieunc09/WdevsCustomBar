@@ -3,10 +3,9 @@
 namespace Wdevs\CustomBar\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Wdevs\CustomBar\Helper\Data as HelperData;
 use Magento\Customer\Helper\Session\CurrentCustomer;
-use Magento\Customer\Api\GroupRepositoryInterface;
+use Magento\Customer\Model\GroupFactory;
 
 class CustomBar implements SectionSourceInterface
 {
@@ -21,23 +20,23 @@ class CustomBar implements SectionSourceInterface
     private $currentCustomer;
 
     /**
-     * @var GroupRepositoryInterface
+     * @var GroupFactory
      */
-    private $groupRepository;
+    private $groupFactory;
 
     /**
      * @param HelperData $helperData
      * @param CurrentCustomer $currentCustomer
-     * @param GroupRepositoryInterface $groupRepository
+     * @param GroupFactory $groupFactory
      */
     public function __construct(
-        HelperData               $helperData,
-        CurrentCustomer          $currentCustomer,
-        GroupRepositoryInterface $groupRepository
+        HelperData      $helperData,
+        CurrentCustomer $currentCustomer,
+        GroupFactory    $groupFactory
     ) {
         $this->helperData = $helperData;
         $this->currentCustomer = $currentCustomer;
-        $this->groupRepository = $groupRepository;
+        $this->groupFactory = $groupFactory;
     }
 
     /**
@@ -48,13 +47,9 @@ class CustomBar implements SectionSourceInterface
     public function getSectionData()
     {
         $result['content'] = null;
-
-        try {
-            if ($this->helperData->isEnabled() && $this->currentCustomer->getCustomer()->getId()) {
-                $customerGroup = $this->groupRepository->getById($this->currentCustomer->getCustomer()->getGroupId());
-                $result['content'] = $customerGroup->getCode();
-            }
-        } catch (NoSuchEntityException $noSuchEntityException) {
+        if ($this->helperData->isEnabled() && $this->currentCustomer->getCustomerId()) {
+            $customerGroup = $this->groupFactory->create()->load($this->currentCustomer->getCustomer()->getGroupId());
+            $result['content'] = $customerGroup->getCustomBarContent();
         }
 
         return $result;
